@@ -1,5 +1,10 @@
 package games.harker.cluecompanionapp;
 
+import android.util.Pair;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public class ClueGameSheet
 {
     public static final int SEEN = 4; //Eye symbol
@@ -9,7 +14,6 @@ public class ClueGameSheet
     public static final int UNKNOWN = 0; //No symbol
 
     private static ClueGameSheet model;
-    public static int numberOfPlayers_onPendingGame;
 
     public final int length = 21;
     public final int numberOfPlayers;
@@ -17,18 +21,13 @@ public class ClueGameSheet
 
     public static ClueGameSheet getModel()
     {
-        if(model == null) model = new ClueGameSheet(numberOfPlayers_onPendingGame);
+        if(model == null) model = new ClueGameSheet(PlayerBuilder.getPlayersSize());
         return model;
     }
 
     public static void quitGame()
     {
         model = null;
-    }
-
-    public static void setNumberOfPlayers(int players)
-    {
-        numberOfPlayers_onPendingGame = players;
     }
 
     public static boolean isHeader(int position)
