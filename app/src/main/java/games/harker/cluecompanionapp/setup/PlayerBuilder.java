@@ -3,14 +3,12 @@ package games.harker.cluecompanionapp.setup;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.harker.cluecompanionapp.game.Player;
-
 public class PlayerBuilder {
-    private static List<Player> players;
+    private static List<PlayerSetup> players;
     private static int playerId = 0;
     private static boolean isFinal;
 
-    private static List<Player> getPlayers()
+    private static List<PlayerSetup> getPlayers()
     {
         if(players == null)
         {
@@ -29,7 +27,7 @@ public class PlayerBuilder {
 
     protected static int createPlayer(String playerName, int colorIndex)
     {
-        Player player = new Player(playerId, playerName, colorIndex);
+        PlayerSetup player = new PlayerSetup(playerId, playerName, colorIndex);
         playerId++;
         getPlayers().add(player);
         return player.getId();
@@ -37,7 +35,7 @@ public class PlayerBuilder {
 
     protected static int removePlayer(int id)
     {
-        Player player = getPlayer(id);
+        PlayerSetup player = getPlayer(id);
         int index = getPlayers().indexOf(player);
         getPlayers().remove(player);
         return index;
@@ -83,13 +81,13 @@ public class PlayerBuilder {
         return getPlayers().size();
     }
 
-    public static Player getPlayer(int id)
+    public static PlayerSetup getPlayer(int id)
     {
         for(int i = 0; i < getPlayers().size(); i++)
         {
             if(getPlayers().get(i).getId() == id)
             {
-                Player p = getPlayers().get(i);
+                PlayerSetup p = getPlayers().get(i);
                 if(isFinal)
                     p = p.clone();
                 return p;
@@ -99,9 +97,9 @@ public class PlayerBuilder {
         return null;
     }
 
-    public static Player getPlayerByIndex(int index)
+    public static PlayerSetup getPlayerByIndex(int index)
     {
-        Player p = getPlayers().get(index);
+        PlayerSetup p = getPlayers().get(index);
         if(isFinal)
             p = p.clone();
         return p;

@@ -1,15 +1,13 @@
-package games.harker.cluecompanionapp.game;
+package games.harker.cluecompanionapp.setup;
 
-import games.harker.cluecompanionapp.setup.PlayerSelectAdapter;
-
-public class Player
+public class PlayerSetup
 {
     private String name;
     private int color;
     private int colorIndex;
     private int id;
 
-    public Player(int id, String name, int colorIndex)
+    public PlayerSetup(int id, String name, int colorIndex)
     {
         this.id = id;
         this.name = name;
@@ -53,8 +51,8 @@ public class Player
         return colorIndex;
     }
 
-    public Player clone()
+    public PlayerSetup clone()
     {
-        return new Player(this.id, this.name, this.colorIndex);
+        return new PlayerSetup(this.id, this.name, this.colorIndex);
     }
 }

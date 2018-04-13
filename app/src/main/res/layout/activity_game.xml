@@ -12,6 +12,14 @@
         android:background="@color/gray"
         android:id="@+id/top_bar" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:background="@color/gray"
+        android:visibility="gone"
+        android:id="@+id/card_count_bar" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/table_list"

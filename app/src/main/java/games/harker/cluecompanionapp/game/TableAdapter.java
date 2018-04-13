@@ -16,6 +16,13 @@ import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
 public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
+    private GameActivity activity;
+
+    public TableAdapter(GameActivity activity)
+    {
+        this.activity = activity;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -110,6 +117,7 @@ public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     @Override
                     public void onClick(View view) {
                         ClueGameSheet.getModel().setValue(ClueGameSheet.getModel().getSelectedType(), row, col);
+                        activity.updateValues(row, col);
                         TableAdapter.this.notifyItemChanged(position);
                     }
                 });
@@ -120,6 +128,7 @@ public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     @Override
                     public void onClick(View view) {
                         ClueGameSheet.getModel().setValue(ClueGameSheet.getModel().getSelectedType(), row, col);
+                        activity.updateValues(row, col);
                         TableAdapter.this.notifyItemChanged(position);
                     }
                 });

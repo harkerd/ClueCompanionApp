@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import games.harker.cluecompanionapp.R;
+import games.harker.cluecompanionapp.Tools;
 import games.harker.cluecompanionapp.setup.PlayerBuilder;
+import games.harker.cluecompanionapp.setup.Settings;
 
 public class GameActivity extends AppCompatActivity
 {
@@ -32,32 +35,36 @@ public class GameActivity extends AppCompatActivity
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         tableView.setLayoutManager(layoutManager);
 
-        tableAdapter = new TableAdapter();
+        tableAdapter = new TableAdapter(this);
         tableView.setAdapter(tableAdapter);
 
         LinearLayout topBar = findViewById(R.id.top_bar);
         TextView emptySpace = new TextView(this, null);
-        int dps = 125;
-        float scale = getResources().getDisplayMetrics().density;
-        int pixels = (int) (dps * scale + 0.5f);
-        emptySpace.setWidth(pixels);
+        emptySpace.setWidth(Tools.dpConvertToPixel(125, this));
         topBar.addView(emptySpace);
 
         for(int i = 0; i < ClueGameSheet.getModel().numberOfPlayers; i++)
         {
-            View columnElementSeparator = new View(this);
-            columnElementSeparator.setLayoutParams(new LinearLayout.LayoutParams(1, LinearLayout.LayoutParams.MATCH_PARENT));
-            columnElementSeparator.setBackgroundColor(Color.BLACK);
+            buildTopBarColumn(PlayerBuilder.getPlayerByIndex(i).getName(), topBar);
+        }
 
-            TextView nameContainer = new TextView(this, null);
-            nameContainer.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            nameContainer.setTextSize(20);
-            nameContainer.setGravity(Gravity.CENTER);
-            nameContainer.setText(PlayerBuilder.getPlayerByIndex(i).getName());
+        LinearLayout cardCountBar = findViewById(R.id.card_count_bar);
+        if(Settings.showCardCount())
+        {
+            cardCountBar.setVisibility(LinearLayout.VISIBLE);
+            emptySpace = new TextView(this, null);
+            emptySpace.setWidth(Tools.dpConvertToPixel(125, this));
+            cardCountBar.addView(emptySpace);
 
-
-            topBar.addView(columnElementSeparator);
-            topBar.addView(nameContainer);
+            for(int i = 0; i < ClueGameSheet.getModel().numberOfPlayers; i++)
+            {
+                Pair<Integer, Integer> cardCount = ClueGameSheet.getModel().getPlayerCardCount(i);
+                buildTopBarColumn(cardCount.first + "/" + cardCount.second, cardCountBar);
+            }
+        }
+        else
+        {
+            cardCountBar.setVisibility(LinearLayout.GONE);
         }
 
 
@@ -133,5 +140,58 @@ public class GameActivity extends AppCompatActivity
 
         ClueGameSheet.getModel().setSelectedType(selectedType);
         buttons[selectedType - 1].setBackgroundColor(Color.YELLOW);
+    }
+
+    private void buildTopBarColumn(String name, LinearLayout parent)
+    {
+        View columnElementSeparator = new View(this);
+        columnElementSeparator.setLayoutParams(new LinearLayout.LayoutParams(1, LinearLayout.LayoutParams.MATCH_PARENT));
+        columnElementSeparator.setBackgroundColor(Color.BLACK);
+
+        TextView nameContainer = new TextView(this, null);
+        nameContainer.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        nameContainer.setTextSize(20);
+        nameContainer.setGravity(Gravity.CENTER);
+        nameContainer.setText(name);
+
+        parent.addView(columnElementSeparator);
+        parent.addView(nameContainer);
+    }
+
+    public void updateValues(int row, int col)
+    {
+        if(Settings.showCardCount())
+        {
+            updatePlayerCardCount(col);
+        }
+
+        if(Settings.autoPopulate())
+        {
+            autoPopulateValues(row, col);
+        }
+    }
+
+    private void updatePlayerCardCount(int playerIndex)
+    {
+        LinearLayout cardCountBar = findViewById(R.id.card_count_bar);
+        int index = 2 * (playerIndex + 1);
+        TextView fieldToUpdate = (TextView) cardCountBar.getChildAt(index);
+        Pair<Integer, Integer> cardCount = ClueGameSheet.getModel().getPlayerCardCount(playerIndex);
+        fieldToUpdate.setText(cardCount.first + "/" + cardCount.second);
+    }
+
+    private void autoPopulateValues(int row, int col)
+    {
+        if(ClueGameSheet.getModel().getValue(row, col) == ClueGameSheet.SEEN)
+        {
+            ClueGameSheet.getModel().setXOnRow(row);
+        }
+
+        Pair cardCount = ClueGameSheet.getModel().getPlayerCardCount(col);
+        if(cardCount.first == cardCount.second)
+        {
+            ClueGameSheet.getModel().setXOnCol(col);
+            tableAdapter.notifyDataSetChanged();
+        }
     }
 }

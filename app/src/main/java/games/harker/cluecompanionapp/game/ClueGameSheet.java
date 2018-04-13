@@ -1,5 +1,7 @@
 package games.harker.cluecompanionapp.game;
 
+import android.util.Pair;
+
 import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
 public class ClueGameSheet
@@ -9,13 +11,6 @@ public class ClueGameSheet
     public static final int MUST_HAVE = 2; //A !
     public static final int MAYBE_HAS = 1; //A ?
     public static final int UNKNOWN = 0; //No symbol
-
-    /*
-        3 players - 6 cards
-        4 players - 2 with 5 cards, 2 with 4 cards
-        5 players - 3 with 4 cards, 2 with 3 cards
-        6 players - 3 cards
-    */
 
     private static ClueGameSheet model;
 
@@ -101,6 +96,13 @@ public class ClueGameSheet
         return text;
     }
 
+    /*
+        3 players - 6 cards
+        4 players - 2 with 5 cards, 2 with 4 cards
+        5 players - 3 with 4 cards, 2 with 3 cards
+        6 players - 3 cards
+    */
+
     private int[][] grid;
     private int selectedType = UNKNOWN;
 
@@ -132,5 +134,69 @@ public class ClueGameSheet
     public int getSelectedType()
     {
         return selectedType;
+    }
+
+    public Pair<Integer,Integer> getPlayerCardCount(int playerIndex)
+    {
+        int playerIndicated = 0;
+        int playerTotal = -1;
+
+        for(int i = 0; i < length; i++)
+        {
+            int value = grid[i][playerIndex];
+            if(value == SEEN || value == MUST_HAVE)
+            {
+                playerIndicated++;
+            }
+        }
+
+        switch(numberOfPlayers)
+        {
+            case 6:
+                playerTotal = 3;
+                break;
+
+            case 5:
+                if(playerIndex < 3)
+                    playerTotal = 4;
+                else
+                    playerTotal = 3;
+                break;
+
+            case 4:
+                if(playerIndex < 2)
+                    playerTotal = 5;
+                else
+                    playerTotal = 4;
+                break;
+
+            case 3:
+                playerTotal = 6;
+                break;
+        }
+
+        return new Pair<>(playerIndicated, playerTotal);
+    }
+
+    public void setXOnRow(int row)
+    {
+        for(int i = 0; i < numberOfPlayers; i++)
+        {
+            if(grid[row][i] != SEEN)
+            {
+                grid[row][i] = KNOW_HAS_NOT;
+            }
+        }
+    }
+
+    public void setXOnCol(int playerIndex)
+    {
+        for(int i = 0; i < length; i++)
+        {
+            if(grid[i][playerIndex] != SEEN && grid[i][playerIndex] != MUST_HAVE)
+            {
+                grid[i][playerIndex] = KNOW_HAS_NOT;
+            }
+        }
     }
 }

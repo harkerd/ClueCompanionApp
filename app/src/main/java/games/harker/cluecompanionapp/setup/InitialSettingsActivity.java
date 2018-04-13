@@ -9,14 +9,15 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import games.harker.cluecompanionapp.Tools;
 import games.harker.cluecompanionapp.game.ClueGameSheet;
 import games.harker.cluecompanionapp.game.GameActivity;
 import games.harker.cluecompanionapp.R;
-import games.harker.cluecompanionapp.game.Player;
 
 public class InitialSettingsActivity extends AppCompatActivity {
     private LinearLayout playerList;
@@ -66,13 +67,31 @@ public class InitialSettingsActivity extends AppCompatActivity {
                 findViewById(R.id.start_button).setEnabled(PlayerBuilder.isValid());
             }
         });
+
+        final CheckBox displayCardCounts = findViewById(R.id.display_card_count);
+        displayCardCounts.setChecked(Settings.showCardCount());
+        displayCardCounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Settings.setShowCardCount(displayCardCounts.isChecked());
+            }
+        });
+
+        final CheckBox autoPopulateValues = findViewById(R.id.auto_populate_values);
+        autoPopulateValues.setChecked(Settings.autoPopulate());
+        autoPopulateValues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Settings.setAutoPopulate(autoPopulateValues.isChecked());
+            }
+        });
     }
 
     private void rebuildPlayers()
     {
         for(int i = 0; i < PlayerBuilder.getPlayersSize(); i ++)
         {
-            Player player = PlayerBuilder.getPlayerByIndex(i);
+            PlayerSetup player = PlayerBuilder.getPlayerByIndex(i);
             addPlayerField(player.getName(), player.getColorIndex(), player.getId());
         }
     }
@@ -127,9 +146,7 @@ public class InitialSettingsActivity extends AppCompatActivity {
         });
 
         Button removePlayer = new Button(this);
-        int dps = 50;
-        float scale = getResources().getDisplayMetrics().density;
-        int pixels = (int) (dps * scale + 0.5f);
+        int pixels = Tools.dpConvertToPixel(50, this);
         removePlayer.setMinimumWidth(pixels);
         removePlayer.setWidth(pixels);
         removePlayer.setText("-");
