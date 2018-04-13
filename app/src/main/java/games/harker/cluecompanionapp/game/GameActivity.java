@@ -1,15 +1,20 @@
-package games.harker.cluecompanionapp;
+package games.harker.cluecompanionapp.game;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import games.harker.cluecompanionapp.R;
+import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
 public class GameActivity extends AppCompatActivity
 {
@@ -29,6 +34,32 @@ public class GameActivity extends AppCompatActivity
 
         tableAdapter = new TableAdapter();
         tableView.setAdapter(tableAdapter);
+
+        LinearLayout topBar = findViewById(R.id.top_bar);
+        TextView emptySpace = new TextView(this, null);
+        int dps = 125;
+        float scale = getResources().getDisplayMetrics().density;
+        int pixels = (int) (dps * scale + 0.5f);
+        emptySpace.setWidth(pixels);
+        topBar.addView(emptySpace);
+
+        for(int i = 0; i < ClueGameSheet.getModel().numberOfPlayers; i++)
+        {
+            View columnElementSeparator = new View(this);
+            columnElementSeparator.setLayoutParams(new LinearLayout.LayoutParams(1, LinearLayout.LayoutParams.MATCH_PARENT));
+            columnElementSeparator.setBackgroundColor(Color.BLACK);
+
+            TextView nameContainer = new TextView(this, null);
+            nameContainer.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            nameContainer.setTextSize(20);
+            nameContainer.setGravity(Gravity.CENTER);
+            nameContainer.setText(PlayerBuilder.getPlayerByIndex(i).getName());
+
+
+            topBar.addView(columnElementSeparator);
+            topBar.addView(nameContainer);
+        }
+
 
         LinearLayout bottomBar = findViewById(R.id.bottom_bar);
 

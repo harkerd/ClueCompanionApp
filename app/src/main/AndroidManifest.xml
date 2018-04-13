@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".GameActivity"></activity>
-        <activity android:name=".InitialSettingsActivity">
+        <activity android:name=".game.GameActivity"></activity>
+        <activity android:name=".setup.InitialSettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,6 @@
-package games.harker.cluecompanionapp;
+package games.harker.cluecompanionapp.game;
+
+import games.harker.cluecompanionapp.setup.PlayerSelectAdapter;
 
 public class Player
 {
@@ -49,5 +51,10 @@ public class Player
     public int getColorIndex()
     {
         return colorIndex;
+    }
+
+    public Player clone()
+    {
+        return new Player(this.id, this.name, this.colorIndex);
     }
 }

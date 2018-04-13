@@ -1,4 +1,4 @@
-package games.harker.cluecompanionapp;
+package games.harker.cluecompanionapp.setup;
 
 import android.content.Context;
 import android.graphics.Color;

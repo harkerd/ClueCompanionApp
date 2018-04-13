@@ -7,24 +7,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:orientation="horizontal"
-        android:layout_weight="1"
+        android:background="@color/gray"
         android:id="@+id/top_bar" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/table_list"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="1"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:background="@color/gray"
-        android:layout_weight="1"
         android:id="@+id/bottom_bar" />
 
 </LinearLayout>

@@ -1,9 +1,6 @@
-package games.harker.cluecompanionapp;
+package games.harker.cluecompanionapp.game;
 
-import android.util.Pair;
-
-import java.util.LinkedList;
-import java.util.List;
+import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
 public class ClueGameSheet
 {
@@ -12,6 +9,13 @@ public class ClueGameSheet
     public static final int MUST_HAVE = 2; //A !
     public static final int MAYBE_HAS = 1; //A ?
     public static final int UNKNOWN = 0; //No symbol
+
+    /*
+        3 players - 6 cards
+        4 players - 2 with 5 cards, 2 with 4 cards
+        5 players - 3 with 4 cards, 2 with 3 cards
+        6 players - 3 cards
+    */
 
     private static ClueGameSheet model;
 

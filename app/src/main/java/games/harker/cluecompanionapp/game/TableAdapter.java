@@ -1,4 +1,4 @@
-package games.harker.cluecompanionapp;
+package games.harker.cluecompanionapp.game;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import games.harker.cluecompanionapp.R;
+import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
 public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
@@ -98,6 +101,7 @@ public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 ViewSwitcher buttonContainer = new ViewSwitcher(rowView.getContext());
                 buttonContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                buttonContainer.setBackgroundColor(PlayerBuilder.getPlayerByIndex(i).getColor());
 
                 Button columnElement = new Button(rowView.getContext());
                 columnElement.setBackgroundColor(Color.TRANSPARENT);

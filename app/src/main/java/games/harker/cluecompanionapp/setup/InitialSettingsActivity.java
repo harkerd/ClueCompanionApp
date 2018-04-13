@@ -1,9 +1,10 @@
-package games.harker.cluecompanionapp;
+package games.harker.cluecompanionapp.setup;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+
+import games.harker.cluecompanionapp.game.ClueGameSheet;
+import games.harker.cluecompanionapp.game.GameActivity;
+import games.harker.cluecompanionapp.R;
+import games.harker.cluecompanionapp.game.Player;
 
 public class InitialSettingsActivity extends AppCompatActivity {
     private LinearLayout playerList;
@@ -20,6 +26,11 @@ public class InitialSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_settings);
         playerList = findViewById(R.id.player_list);
+
+        if(PlayerBuilder.isFinal())
+        {
+            PlayerBuilder.reset(); //TODO: the back button issue is still a little strange
+        }
 
         if(PlayerBuilder.getPlayersSize() != 0)
         {
@@ -42,6 +53,7 @@ public class InitialSettingsActivity extends AppCompatActivity {
                 Intent intent = new Intent(InitialSettingsActivity.this, GameActivity.class);
 
                 ClueGameSheet.quitGame();
+                PlayerBuilder.setFinal();
                 startActivity(intent);
             }
         });
@@ -51,6 +63,7 @@ public class InitialSettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addPlayer();
+                findViewById(R.id.start_button).setEnabled(PlayerBuilder.isValid());
             }
         });
     }
@@ -66,33 +79,33 @@ public class InitialSettingsActivity extends AppCompatActivity {
 
     private void addPlayer()
     {
-        String playerName = "Player " + (PlayerBuilder.getPlayersSize() + 1);
+        String playerName = "P" + (PlayerBuilder.getPlayersSize() + 1);
         int arrayIndex =  PlayerBuilder.getPlayersSize();
         int id = PlayerBuilder.createPlayer(playerName, arrayIndex);
 
         addPlayerField(playerName, arrayIndex, id);
     }
 
-    private void addPlayerField(String playerName, int colorSelectIndex, final int id) {
+    private void addPlayerField(String playerName, int colorSelectIndex, final int id)
+    {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
 
         EditText playerNameField = new EditText(this);
         playerNameField.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 10.0f));
         playerNameField.setText(playerName);
+        int maxLengthofEditText = 3;
+        playerNameField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLengthofEditText)});
         playerNameField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                PlayerBuilder.getPlayer(id).setName((String) charSequence);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+                PlayerBuilder.getPlayer(id).setName(charSequence.toString());
             }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            @Override public void afterTextChanged(Editable editable) {}
         });
 
         Spinner colorSelect = new Spinner(this);
@@ -105,7 +118,7 @@ public class InitialSettingsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PlayerBuilder.getPlayer(id).setColorIndex(i);
-                //TODO: Validate if can start
+                findViewById(R.id.start_button).setEnabled(PlayerBuilder.isValid());
             }
 
             @Override
@@ -129,7 +142,7 @@ public class InitialSettingsActivity extends AppCompatActivity {
                 {
                     findViewById(R.id.add_player).setEnabled(true);
                 }
-                //TODO: Validate if can start
+                findViewById(R.id.start_button).setEnabled(PlayerBuilder.isValid());
             }
         });
 
