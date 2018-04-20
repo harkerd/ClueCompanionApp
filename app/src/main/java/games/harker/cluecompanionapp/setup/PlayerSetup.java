@@ -32,13 +32,13 @@ public class PlayerSetup
     public void setColor(int color)
     {
         this.color = color;
-        this.colorIndex = PlayerSelectAdapter.getIndex(color);
+        this.colorIndex = SetupCharacterSelectAdapter.getIndex(color);
     }
 
     public void setColorIndex(int index)
     {
         this.colorIndex = index;
-        this.color = PlayerSelectAdapter.getColor(index);
+        this.color = SetupCharacterSelectAdapter.getColor(index);
     }
 
     public int getColor()

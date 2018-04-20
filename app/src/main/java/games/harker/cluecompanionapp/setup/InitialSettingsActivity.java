@@ -85,6 +85,16 @@ public class InitialSettingsActivity extends AppCompatActivity {
                 Settings.setAutoPopulate(autoPopulateValues.isChecked());
             }
         });
+
+        final CheckBox accessAccusationList = findViewById(R.id.accusation_list);
+        accessAccusationList.setChecked(Settings.accessAccusationList());
+        accessAccusationList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Settings.setAccusationListAccess(accessAccusationList.isChecked());
+            }
+        });
+
     }
 
     private void rebuildPlayers()
@@ -130,7 +140,7 @@ public class InitialSettingsActivity extends AppCompatActivity {
         Spinner colorSelect = new Spinner(this);
         colorSelect.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
         colorSelect.setMinimumWidth(10);
-        colorSelect.setAdapter(new PlayerSelectAdapter(this));
+        colorSelect.setAdapter(new SetupCharacterSelectAdapter(this));
         colorSelect.setSelection(colorSelectIndex);
 
         colorSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

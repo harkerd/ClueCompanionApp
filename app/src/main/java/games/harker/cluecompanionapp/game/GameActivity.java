@@ -1,5 +1,6 @@
 package games.harker.cluecompanionapp.game;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import games.harker.cluecompanionapp.R;
 import games.harker.cluecompanionapp.Tools;
+import games.harker.cluecompanionapp.accusation.AccusationList;
 import games.harker.cluecompanionapp.setup.PlayerBuilder;
 import games.harker.cluecompanionapp.setup.Settings;
 
@@ -23,12 +25,21 @@ public class GameActivity extends AppCompatActivity
 {
     public RecyclerView tableView;
     private RecyclerView.Adapter tableAdapter;
-    private View[] buttons = new View[4];
+    private View[] buttons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        if(Settings.accessAccusationList())
+        {
+            buttons = new View[5];
+        }
+        else
+        {
+            buttons = new View[4];
+        }
 
         tableView = findViewById(R.id.table_list);
         tableView.setHasFixedSize(true);
@@ -126,6 +137,23 @@ public class GameActivity extends AppCompatActivity
         bottomBar.addView(mustHaveButton);
         bottomBar.addView(knowHasNotButton);
         bottomBar.addView(seenButton);
+
+        if(Settings.accessAccusationList())
+        {
+            Button accessAccusationList = new Button(this);
+            accessAccusationList.setBackgroundColor(Color.TRANSPARENT);
+            accessAccusationList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            accessAccusationList.setTextSize(24);
+            accessAccusationList.setText("+");
+            accessAccusationList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(GameActivity.this, AccusationList.class);
+                    startActivity(intent);
+                }
+            });
+            bottomBar.addView(accessAccusationList);
+        }
 
         int currentlySelected = ClueGameSheet.getModel().getSelectedType();
         if(currentlySelected != ClueGameSheet.UNKNOWN)

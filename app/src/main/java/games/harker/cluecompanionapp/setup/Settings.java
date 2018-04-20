@@ -4,6 +4,7 @@ public class Settings
 {
     private static boolean showCardCount;
     private static boolean autoPopulate;
+    private static boolean accessAccusationList;
 
     protected static void setShowCardCount(boolean show)
     {
@@ -23,5 +24,15 @@ public class Settings
     public static boolean autoPopulate()
     {
         return autoPopulate;
+    }
+
+    protected static void setAccusationListAccess(boolean access)
+    {
+        accessAccusationList = access;
+    }
+
+    public static boolean accessAccusationList()
+    {
+        return accessAccusationList;
     }
 }

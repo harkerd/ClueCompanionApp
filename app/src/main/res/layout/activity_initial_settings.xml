@@ -46,4 +46,10 @@
         android:text="Auto Populate Values"
         android:id="@+id/auto_populate_values"/>
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Access Accusation List"
+        android:id="@+id/accusation_list"/>
+
 </LinearLayout>

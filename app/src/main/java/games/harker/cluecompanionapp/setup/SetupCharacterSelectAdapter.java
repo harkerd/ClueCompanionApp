@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class PlayerSelectAdapter extends BaseAdapter
+public class SetupCharacterSelectAdapter extends BaseAdapter
 {
     private static ArrayList<Pair<String, Integer>> colors;
     private Context context;
@@ -48,9 +48,9 @@ public class PlayerSelectAdapter extends BaseAdapter
         return colors;
     }
 
-    public PlayerSelectAdapter(Context context)
+    public SetupCharacterSelectAdapter(Context context)
     {
-        this.context=context;
+        this.context = context;
     }
 
     @Override
@@ -82,5 +82,4 @@ public class PlayerSelectAdapter extends BaseAdapter
         txv.setText(getColors().get(pos).first);
         return view;
     }
-
 }

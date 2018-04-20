@@ -178,6 +178,19 @@ public class ClueGameSheet
         return new Pair<>(playerIndicated, playerTotal);
     }
 
+    public int getOwnerIndex(int row)
+    {
+        for(int i = 0; i < numberOfPlayers; i++)
+        {
+            if(grid[row][i] == SEEN || grid[row][i] == MUST_HAVE)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     public void setXOnRow(int row)
     {
         for(int i = 0; i < numberOfPlayers; i++)
