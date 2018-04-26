@@ -3,6 +3,11 @@ package games.harker.cluecompanionapp.accusation;
 import java.util.ArrayList;
 import java.util.List;
 
+import games.harker.cluecompanionapp.game.ClueGameSheet;
+import games.harker.cluecompanionapp.setup.PlayerBuilder;
+import games.harker.cluecompanionapp.setup.PlayerSetup;
+import games.harker.cluecompanionapp.setup.Settings;
+
 public class AccusationModel {
     private static List<AccusationModel> list;
 
@@ -13,6 +18,35 @@ public class AccusationModel {
             list = new ArrayList<>();
         }
         list.add(model);
+    }
+
+    public static int getListSize()
+    {
+        if(list == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return list.size();
+        }
+    }
+
+    public static AccusationModel get(int index)
+    {
+        if(list == null || list.size() <= index)
+        {
+            return null;
+        }
+        else
+        {
+            return list.get(index);
+        }
+    }
+
+    public static void reset()
+    {
+        list = null;
     }
 
 
@@ -56,39 +90,98 @@ public class AccusationModel {
         return responderPlayerId;
     }
 
-    /*protected int updateResponderPlayerResult()
+    protected void updateResults()
     {
-        boolean doesNotHaveSuspect = ClueGameSheet.getModel().getValue(suspect, responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
-        boolean doesNotHaveWeapon = ClueGameSheet.getModel().getValue(weapon, responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
-        boolean doesNotHaveRoom = ClueGameSheet.getModel().getValue(room, responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
+        if(Settings.autoPopulate() && Settings.accessAccusationList())
+        {
+            updateResponderResult();
+            updateNonResponders();
+        }
+    }
 
-        if(doesNotHaveSuspect && doesNotHaveWeapon)
+    private void updateNonResponders()
+    {
+        if(responderPlayerId == -1)
         {
-            ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, room, responderPlayerId);
-            return room;
-        }
-        if(doesNotHaveSuspect && doesNotHaveRoom)
-        {
-            ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, weapon, responderPlayerId);
-            return weapon;
-        }
-        if(doesNotHaveWeapon && doesNotHaveRoom)
-        {
-            ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, suspect, responderPlayerId);
-            return suspect;
+            for(int i = 0; i < PlayerBuilder.getPlayersSize(); i++)
+            {
+                PlayerSetup p = PlayerBuilder.getPlayerByIndex(i);
+                if(p.getId() != accuserPlayerId)
+                {
+
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.KNOW_HAS_NOT, ClueGameSheet.getRow(suspect), p.getId());
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.KNOW_HAS_NOT, ClueGameSheet.getRow(weapon), p.getId());
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.KNOW_HAS_NOT, ClueGameSheet.getRow(room), p.getId());
+                }
+            }
         }
         else
         {
-            if(ClueGameSheet.getModel().getValue(suspect, responderPlayerId) == ClueGameSheet.UNKNOWN)
-                ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, suspect, responderPlayerId);
+            int startPlayerIndex = PlayerBuilder.getPlayerIndex(accuserPlayerId);
+            int endPlayerIndex = PlayerBuilder.getPlayerIndex(responderPlayerId);
 
-            if(ClueGameSheet.getModel().getValue(weapon, responderPlayerId) == ClueGameSheet.UNKNOWN)
-                ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, suspect, responderPlayerId);
+            int i = startPlayerIndex;
+            while(i != endPlayerIndex)
+            {
+                i++;
+                if(i == PlayerBuilder.getPlayersSize())
+                {
+                    i = 0;
+                }
 
-            if(ClueGameSheet.getModel().getValue(room, responderPlayerId) == ClueGameSheet.UNKNOWN)
-                ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, suspect, responderPlayerId);
-
-            return -1;
+                if(i != startPlayerIndex && i != endPlayerIndex)
+                {
+                    PlayerSetup p = PlayerBuilder.getPlayerByIndex(i);
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.KNOW_HAS_NOT, ClueGameSheet.getRow(suspect), p.getId());
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.KNOW_HAS_NOT, ClueGameSheet.getRow(weapon), p.getId());
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.KNOW_HAS_NOT, ClueGameSheet.getRow(room), p.getId());
+                }
+            }
         }
-    }*/
+    }
+
+    private void updateResponderResult()
+    {
+        if(responderPlayerId != -1)
+        {
+            boolean doesNotHaveSuspect = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
+            boolean doesNotHaveWeapon = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
+            boolean doesNotHaveRoom = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
+
+            if (doesNotHaveSuspect && doesNotHaveWeapon)
+            {
+                ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(room), responderPlayerId);
+            }
+            else if (doesNotHaveSuspect && doesNotHaveRoom)
+            {
+                ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(weapon), responderPlayerId);
+            }
+            else if (doesNotHaveWeapon && doesNotHaveRoom)
+            {
+                ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(suspect), responderPlayerId);
+            }
+            else
+            {
+                if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.UNKNOWN)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(suspect), responderPlayerId);
+
+                if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.UNKNOWN)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(weapon), responderPlayerId);
+
+                if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.UNKNOWN)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(room), responderPlayerId);
+            }
+        }
+        else
+        {
+            if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), accuserPlayerId) == ClueGameSheet.UNKNOWN)
+                ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(suspect), accuserPlayerId);
+
+            if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), accuserPlayerId) == ClueGameSheet.UNKNOWN)
+                ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(weapon), accuserPlayerId);
+
+            if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), accuserPlayerId) == ClueGameSheet.UNKNOWN)
+                ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(room), accuserPlayerId);
+        }
+    }
 }

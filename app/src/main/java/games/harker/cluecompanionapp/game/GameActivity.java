@@ -197,6 +197,12 @@ public class GameActivity extends AppCompatActivity
         {
             autoPopulateValues(row, col);
         }
+
+        if(Settings.accessAccusationList())
+        {
+            AccusationList.updateList();
+            tableAdapter.notifyDataSetChanged();
+        }
     }
 
     private void updatePlayerCardCount(int playerIndex)

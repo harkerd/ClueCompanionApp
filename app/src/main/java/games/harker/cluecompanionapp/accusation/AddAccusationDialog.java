@@ -11,6 +11,7 @@ import android.widget.Spinner;
 
 import games.harker.cluecompanionapp.PlayerSelectAdapter;
 import games.harker.cluecompanionapp.R;
+import games.harker.cluecompanionapp.setup.Settings;
 
 public class AddAccusationDialog extends DialogFragment {
     private Spinner accuser;
@@ -22,6 +23,7 @@ public class AddAccusationDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.dialog_add_accusation, null);
@@ -47,6 +49,7 @@ public class AddAccusationDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         AccusationModel.addToList(new AccusationModel((int) accuser.getSelectedItem(), (int) suspectItemsList.getSelectedItem(), (int) weaponItemsList.getSelectedItem(), (int) roomItemsList.getSelectedItem(), (int) responder.getSelectedItem()));
+                        AccusationList.updateList();
                     }
                 });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

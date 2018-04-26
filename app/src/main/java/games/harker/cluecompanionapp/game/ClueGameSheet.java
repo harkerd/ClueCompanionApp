@@ -2,6 +2,7 @@ package games.harker.cluecompanionapp.game;
 
 import android.util.Pair;
 
+import games.harker.cluecompanionapp.accusation.AccusationModel;
 import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
 public class ClueGameSheet
@@ -27,6 +28,7 @@ public class ClueGameSheet
     public static void quitGame()
     {
         model = null;
+        AccusationModel.reset();
     }
 
     public static boolean isHeader(int position)

@@ -104,4 +104,17 @@ public class PlayerBuilder {
             p = p.clone();
         return p;
     }
+
+    public static int getPlayerIndex(int id)
+    {
+        for(int i = 0; i < getPlayers().size(); i++)
+        {
+            if(getPlayers().get(i).getId() == id)
+            {
+                return i;
+            }
+
+        }
+        return -1;
+    }
 }
