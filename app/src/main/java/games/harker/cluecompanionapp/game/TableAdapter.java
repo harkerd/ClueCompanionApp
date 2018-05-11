@@ -116,7 +116,7 @@ public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 columnElement.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ClueGameSheet.getModel().setValue(ClueGameSheet.getModel().getSelectedType(), row, col);
+                        ClueGameSheet.getModel().toggleValue(ClueGameSheet.getModel().getSelectedType(), row, col);
                         activity.updateValues(row, col);
                         TableAdapter.this.notifyItemChanged(position);
                     }
@@ -127,7 +127,7 @@ public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 seenButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ClueGameSheet.getModel().setValue(ClueGameSheet.getModel().getSelectedType(), row, col);
+                        ClueGameSheet.getModel().toggleValue(ClueGameSheet.getModel().getSelectedType(), row, col);
                         activity.updateValues(row, col);
                         TableAdapter.this.notifyItemChanged(position);
                     }
@@ -147,6 +147,11 @@ public class TableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         {
             TextView headerText = rowView.findViewById(R.id.row_label);
             headerText.setText(text);
+            if(ClueGameSheet.getModel().noOneHas(rowNum))
+                headerText.setBackgroundColor(Color.RED);
+            else
+                headerText.setBackgroundColor(Color.WHITE);
+
             this.row = rowNum;
             this.position = pos;
 

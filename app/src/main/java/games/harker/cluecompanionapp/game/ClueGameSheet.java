@@ -114,13 +114,17 @@ public class ClueGameSheet
         grid = new int[length][numberOfPlayers];
     }
 
-    public void setValue(int type, int row, int col)
+    public void toggleValue(int type, int row, int col)
     {
         if(grid[row][col] == type)
             grid[row][col] = UNKNOWN;
         else
             grid[row][col] = type;
+    }
 
+    public void setValue(int type, int row, int col)
+    {
+        grid[row][col] = type;
     }
 
     public int getValue(int row, int col)
@@ -213,5 +217,18 @@ public class ClueGameSheet
                 grid[i][playerIndex] = KNOW_HAS_NOT;
             }
         }
+    }
+
+    public boolean noOneHas(int row)
+    {
+        for(int i = 0; i < numberOfPlayers; i++)
+        {
+            if(grid[row][i] != KNOW_HAS_NOT)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

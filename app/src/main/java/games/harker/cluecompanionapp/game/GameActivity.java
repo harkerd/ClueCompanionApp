@@ -24,7 +24,7 @@ import games.harker.cluecompanionapp.setup.Settings;
 public class GameActivity extends AppCompatActivity
 {
     public RecyclerView tableView;
-    private RecyclerView.Adapter tableAdapter;
+    private static RecyclerView.Adapter tableAdapter;
     private View[] buttons;
 
     @Override
@@ -227,5 +227,11 @@ public class GameActivity extends AppCompatActivity
             ClueGameSheet.getModel().setXOnCol(col);
             tableAdapter.notifyDataSetChanged();
         }
+    }
+
+
+    public static void notifyChanged()
+    {
+        tableAdapter.notifyDataSetChanged();
     }
 }

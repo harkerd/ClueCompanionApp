@@ -30,7 +30,7 @@ public class InitialSettingsActivity extends AppCompatActivity {
 
         if(PlayerBuilder.isFinal())
         {
-            PlayerBuilder.reset(); //TODO: the back button issue is still a little strange
+            PlayerBuilder.reset();
         }
 
         if(PlayerBuilder.getPlayersSize() != 0)
