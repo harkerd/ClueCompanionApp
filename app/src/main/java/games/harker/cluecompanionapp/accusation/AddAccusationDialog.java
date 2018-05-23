@@ -11,7 +11,6 @@ import android.widget.Spinner;
 
 import games.harker.cluecompanionapp.PlayerSelectAdapter;
 import games.harker.cluecompanionapp.R;
-import games.harker.cluecompanionapp.setup.Settings;
 
 public class AddAccusationDialog extends DialogFragment {
     private Spinner accuser;

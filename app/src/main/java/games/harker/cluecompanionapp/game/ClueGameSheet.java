@@ -163,17 +163,17 @@ public class ClueGameSheet
                 break;
 
             case 5:
-                if(playerIndex < 3)
-                    playerTotal = 4;
-                else
+                if(PlayerBuilder.getPlayerByIndex(playerIndex).getHasLessCards())
                     playerTotal = 3;
+                else
+                    playerTotal = 4;
                 break;
 
             case 4:
-                if(playerIndex < 2)
-                    playerTotal = 5;
-                else
+                if(PlayerBuilder.getPlayerByIndex(playerIndex).getHasLessCards())
                     playerTotal = 4;
+                else
+                    playerTotal = 5;
                 break;
 
             case 3:

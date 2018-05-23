@@ -51,11 +51,16 @@ public class InitialSettingsActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(InitialSettingsActivity.this, GameActivity.class);
 
-                ClueGameSheet.quitGame();
-                PlayerBuilder.setFinal();
-                startActivity(intent);
+                if( (PlayerBuilder.getPlayersSize() == 4 || PlayerBuilder.getPlayersSize() == 5) && (Settings.showCardCount() || Settings.autoPopulate()) )
+                {
+                    SelectCardAmountsDialog newFragment = new SelectCardAmountsDialog();
+                    newFragment.show(getFragmentManager(), "card_amount_select");
+                }
+                else
+                {
+                    startGame();
+                }
             }
         });
 
@@ -95,6 +100,15 @@ public class InitialSettingsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void startGame()
+    {
+        Intent intent = new Intent(InitialSettingsActivity.this, GameActivity.class);
+
+        ClueGameSheet.quitGame();
+        PlayerBuilder.setFinal();
+        startActivity(intent);
     }
 
     private void rebuildPlayers()

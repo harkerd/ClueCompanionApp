@@ -146,32 +146,62 @@ public class AccusationModel {
     {
         if(responderPlayerId != -1)
         {
-            boolean doesNotHaveSuspect = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
-            boolean doesNotHaveWeapon = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
-            boolean doesNotHaveRoom = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
+            boolean doesHaveSuspect = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.SEEN;
+            boolean doesHaveWeapon = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.SEEN;
+            boolean doesHaveRoom = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.SEEN;
 
-            if (doesNotHaveSuspect && doesNotHaveWeapon)
+            if(doesHaveSuspect || doesHaveWeapon || doesHaveRoom)
             {
-                ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(room), responderPlayerId);
-            }
-            else if (doesNotHaveSuspect && doesNotHaveRoom)
-            {
-                ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(weapon), responderPlayerId);
-            }
-            else if (doesNotHaveWeapon && doesNotHaveRoom && ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) != ClueGameSheet.SEEN)
-            {
-                ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(suspect), responderPlayerId);
+                int unknownRow1 = -1;
+                int unknownRow2 = -1;
+                if(doesHaveSuspect)
+                {
+                    unknownRow1 = ClueGameSheet.getRow(weapon);
+                    unknownRow2 = ClueGameSheet.getRow(room);
+                }
+                else if(doesHaveWeapon)
+                {
+                    unknownRow1 = ClueGameSheet.getRow(suspect);
+                    unknownRow2 = ClueGameSheet.getRow(room);
+                }
+                else if(doesHaveRoom)
+                {
+                    unknownRow1 = ClueGameSheet.getRow(suspect);
+                    unknownRow2 = ClueGameSheet.getRow(weapon);
+                }
+
+                if(ClueGameSheet.getModel().getValue(unknownRow1, responderPlayerId) == ClueGameSheet.MAYBE_HAS)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.UNKNOWN, unknownRow1, responderPlayerId);
+
+                if(ClueGameSheet.getModel().getValue(unknownRow2, responderPlayerId) == ClueGameSheet.MAYBE_HAS)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.UNKNOWN, unknownRow2, responderPlayerId);
             }
             else
             {
-                if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.UNKNOWN)
-                    ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(suspect), responderPlayerId);
+                boolean doesNotHaveSuspect = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
+                boolean doesNotHaveWeapon = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
+                boolean doesNotHaveRoom = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
 
-                if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.UNKNOWN)
-                    ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(weapon), responderPlayerId);
+                if (doesNotHaveSuspect && doesNotHaveWeapon)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(room), responderPlayerId);
 
-                if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.UNKNOWN)
-                    ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(room), responderPlayerId);
+                else if (doesNotHaveSuspect && doesNotHaveRoom)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(weapon), responderPlayerId);
+
+                else if (doesNotHaveWeapon && doesNotHaveRoom)
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(suspect), responderPlayerId);
+
+                else
+                {
+                    if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.UNKNOWN)
+                        ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(suspect), responderPlayerId);
+
+                    if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.UNKNOWN)
+                        ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(weapon), responderPlayerId);
+
+                    if (ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.UNKNOWN)
+                        ClueGameSheet.getModel().setValue(ClueGameSheet.MAYBE_HAS, ClueGameSheet.getRow(room), responderPlayerId);
+                }
             }
         }
         else

@@ -6,11 +6,21 @@ public class PlayerSetup
     private int color;
     private int colorIndex;
     private int id;
+    private boolean hasLessCards;
 
     public PlayerSetup(int id, String name, int colorIndex)
     {
         this.id = id;
         this.name = name;
+        this.hasLessCards = false;
+        setColorIndex(colorIndex);
+    }
+
+    private PlayerSetup(int id, String name, int colorIndex, boolean hasLessCards)
+    {
+        this.id = id;
+        this.name = name;
+        this.hasLessCards = hasLessCards;
         setColorIndex(colorIndex);
     }
 
@@ -27,6 +37,16 @@ public class PlayerSetup
     public String getName()
     {
         return name;
+    }
+
+    public void setHasLessCards(boolean hasLessCards)
+    {
+        this.hasLessCards = hasLessCards;
+    }
+
+    public boolean getHasLessCards()
+    {
+        return hasLessCards;
     }
 
     public void setColor(int color)
@@ -53,6 +73,6 @@ public class PlayerSetup
 
     public PlayerSetup clone()
     {
-        return new PlayerSetup(this.id, this.name, this.colorIndex);
+        return new PlayerSetup(this.id, this.name, this.colorIndex, hasLessCards);
     }
 }

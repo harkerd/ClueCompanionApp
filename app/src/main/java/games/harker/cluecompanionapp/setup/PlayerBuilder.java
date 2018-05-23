@@ -41,6 +41,12 @@ public class PlayerBuilder {
         return index;
     }
 
+    protected static void setPlayersWithLessCards(int id1, int id2)
+    {
+        getPlayerByIndex(id1).setHasLessCards(true);
+        getPlayerByIndex(id2).setHasLessCards(true);
+    }
+
     protected static boolean isValid()
     {
         if(getPlayersSize() < 3)
