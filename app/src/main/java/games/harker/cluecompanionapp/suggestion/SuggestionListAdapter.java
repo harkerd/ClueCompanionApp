@@ -1,5 +1,6 @@
 package games.harker.cluecompanionapp.suggestion;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,18 +54,24 @@ public class SuggestionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if(owner != -1)
                 suspect.setBackgroundColor(PlayerBuilder.getPlayerByIndex(owner).getColor());
             suspect.setText(ClueGameSheet.getText(model.getSuspect()));
+            if(model.getSuspect() == model.getCardShown())
+                suspect.setTypeface(null, Typeface.BOLD);
 
             TextView weapon = itemView.findViewById(R.id.weapon);
             owner = ClueGameSheet.getModel().getOwnerIndex(ClueGameSheet.getRow(model.getWeapon()));
             if(owner != -1)
                 weapon.setBackgroundColor(PlayerBuilder.getPlayerByIndex(owner).getColor());
             weapon.setText(ClueGameSheet.getText(model.getWeapon()));
+            if(model.getWeapon() == model.getCardShown())
+                weapon.setTypeface(null, Typeface.BOLD);
 
             TextView room = itemView.findViewById(R.id.room);
             owner = ClueGameSheet.getModel().getOwnerIndex(ClueGameSheet.getRow(model.getRoom()));
             if(owner != -1)
                 room.setBackgroundColor(PlayerBuilder.getPlayerByIndex(owner).getColor());
             room.setText(ClueGameSheet.getText(model.getRoom()));
+            if(model.getRoom() == model.getCardShown())
+                room.setTypeface(null, Typeface.BOLD);
 
 
             TextView responder = itemView.findViewById(R.id.responder);

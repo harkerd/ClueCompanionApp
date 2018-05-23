@@ -56,14 +56,16 @@ public class SuggestionModel {
     private int weapon;
     private int room;
     private int responderPlayerId;
+    private int cardShown;
 
-    protected SuggestionModel(int accuserPlayerId, int suspect, int weapon, int room, int responderPlayerId)
+    protected SuggestionModel(int accuserPlayerId, int suspect, int weapon, int room, int responderPlayerId, int cardShown)
     {
         this.accuserPlayerId = accuserPlayerId;
         this.suspect = suspect;
         this.weapon = weapon;
         this.room = room;
         this.responderPlayerId = responderPlayerId;
+        this.cardShown = cardShown;
     }
 
     protected int getAccuserPlayer()
@@ -89,6 +91,11 @@ public class SuggestionModel {
     protected int getResponderPlayer()
     {
         return responderPlayerId;
+    }
+
+    protected int getCardShown()
+    {
+        return cardShown;
     }
 
     protected void updateResults()
@@ -144,7 +151,23 @@ public class SuggestionModel {
 
     private void updateResponderResult()
     {
-        if(responderPlayerId != -1)
+        if(cardShown != -1)
+        {
+            for(int i = 0; i < PlayerBuilder.getPlayersSize(); i++)
+            {
+                PlayerSetup p = PlayerBuilder.getPlayerByIndex(i);
+                if(p.getId() != responderPlayerId)
+                {
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.KNOW_HAS_NOT, ClueGameSheet.getRow(cardShown), p.getId());
+                }
+                else
+                {
+                    ClueGameSheet.getModel().setValue(ClueGameSheet.SEEN, ClueGameSheet.getRow(cardShown), responderPlayerId);
+                }
+            }
+
+        }
+        else if(responderPlayerId != -1)
         {
             boolean doesHaveSuspect = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(suspect), responderPlayerId) == ClueGameSheet.SEEN;
             boolean doesHaveWeapon = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(weapon), responderPlayerId) == ClueGameSheet.SEEN;
@@ -183,13 +206,22 @@ public class SuggestionModel {
                 boolean doesNotHaveRoom = ClueGameSheet.getModel().getValue(ClueGameSheet.getRow(room), responderPlayerId) == ClueGameSheet.KNOW_HAS_NOT;
 
                 if (doesNotHaveSuspect && doesNotHaveWeapon)
+                {
                     ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(room), responderPlayerId);
+                    cardShown = room;
+                }
 
                 else if (doesNotHaveSuspect && doesNotHaveRoom)
+                {
                     ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(weapon), responderPlayerId);
+                    cardShown = weapon;
+                }
 
                 else if (doesNotHaveWeapon && doesNotHaveRoom)
+                {
                     ClueGameSheet.getModel().setValue(ClueGameSheet.MUST_HAVE, ClueGameSheet.getRow(suspect), responderPlayerId);
+                    cardShown = suspect;
+                }
 
                 else
                 {

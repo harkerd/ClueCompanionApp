@@ -142,46 +142,49 @@ public class ClueGameSheet
         return selectedType;
     }
 
-    public Pair<Integer,Integer> getPlayerCardCount(int playerIndex)
+    public PlayerCardCount getPlayerCardCount(int playerIndex)
     {
-        int playerIndicated = 0;
-        int playerTotal = -1;
+        PlayerCardCount count = new PlayerCardCount();
+        count.playerKnowHasNot = 0;
+        count.playerIndicated = 0;
+        count.playerTotal = -1;
 
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
             int value = grid[i][playerIndex];
-            if(value == SEEN || value == MUST_HAVE)
-            {
-                playerIndicated++;
-            }
+            if(value == KNOW_HAS_NOT)
+                count.playerKnowHasNot++;
+            else if(value == SEEN || value == MUST_HAVE)
+                count.playerIndicated++;
         }
+
 
         switch(numberOfPlayers)
         {
             case 6:
-                playerTotal = 3;
+                count.playerTotal = 3;
                 break;
 
             case 5:
                 if(PlayerBuilder.getPlayerByIndex(playerIndex).getHasLessCards())
-                    playerTotal = 3;
+                    count.playerTotal = 3;
                 else
-                    playerTotal = 4;
+                    count.playerTotal = 4;
                 break;
 
             case 4:
                 if(PlayerBuilder.getPlayerByIndex(playerIndex).getHasLessCards())
-                    playerTotal = 4;
+                    count.playerTotal = 4;
                 else
-                    playerTotal = 5;
+                    count.playerTotal = 5;
                 break;
 
             case 3:
-                playerTotal = 6;
+                count.playerTotal = 6;
                 break;
         }
 
-        return new Pair<>(playerIndicated, playerTotal);
+        return count;
     }
 
     public int getOwnerIndex(int row)
@@ -215,6 +218,17 @@ public class ClueGameSheet
             if(grid[i][playerIndex] != SEEN && grid[i][playerIndex] != MUST_HAVE)
             {
                 grid[i][playerIndex] = KNOW_HAS_NOT;
+            }
+        }
+    }
+
+    public void setMustHaveOnCol(int playerIndex)
+    {
+        for(int i = 0; i < length; i++)
+        {
+            if(grid[i][playerIndex] != SEEN && grid[i][playerIndex] != KNOW_HAS_NOT)
+            {
+                grid[i][playerIndex] = MUST_HAVE;
             }
         }
     }

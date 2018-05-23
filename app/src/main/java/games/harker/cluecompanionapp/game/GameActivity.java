@@ -23,14 +23,17 @@ import games.harker.cluecompanionapp.setup.Settings;
 
 public class GameActivity extends AppCompatActivity
 {
+    public static GameActivity activity;
     public RecyclerView tableView;
-    private static RecyclerView.Adapter tableAdapter;
+    private RecyclerView.Adapter tableAdapter;
     private View[] buttons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        activity = this;
 
         if(Settings.accessSuggestionList())
         {
@@ -69,8 +72,8 @@ public class GameActivity extends AppCompatActivity
 
             for(int i = 0; i < ClueGameSheet.getModel().numberOfPlayers; i++)
             {
-                Pair<Integer, Integer> cardCount = ClueGameSheet.getModel().getPlayerCardCount(i);
-                buildTopBarColumn(cardCount.first + "/" + cardCount.second, cardCountBar);
+                PlayerCardCount cardCount = ClueGameSheet.getModel().getPlayerCardCount(i);
+                buildTopBarColumn(cardCount.playerIndicated + "/" + cardCount.playerTotal, cardCountBar);
             }
         }
         else
@@ -210,8 +213,8 @@ public class GameActivity extends AppCompatActivity
         LinearLayout cardCountBar = findViewById(R.id.card_count_bar);
         int index = 2 * (playerIndex + 1);
         TextView fieldToUpdate = (TextView) cardCountBar.getChildAt(index);
-        Pair<Integer, Integer> cardCount = ClueGameSheet.getModel().getPlayerCardCount(playerIndex);
-        fieldToUpdate.setText(cardCount.first + "/" + cardCount.second);
+        PlayerCardCount cardCount = ClueGameSheet.getModel().getPlayerCardCount(playerIndex);
+        fieldToUpdate.setText(cardCount.playerIndicated + "/" + cardCount.playerTotal);
     }
 
     private void autoPopulateValues(int row, int col)
@@ -221,10 +224,16 @@ public class GameActivity extends AppCompatActivity
             ClueGameSheet.getModel().setXOnRow(row);
         }
 
-        Pair cardCount = ClueGameSheet.getModel().getPlayerCardCount(col);
-        if(cardCount.first == cardCount.second)
+        PlayerCardCount cardCount = ClueGameSheet.getModel().getPlayerCardCount(col);
+        if(cardCount.playerIndicated == cardCount.playerTotal)
         {
             ClueGameSheet.getModel().setXOnCol(col);
+            tableAdapter.notifyDataSetChanged();
+        }
+        else if(ClueGameSheet.getModel().length == cardCount.playerTotal + cardCount.playerKnowHasNot)
+        {
+            ClueGameSheet.getModel().setMustHaveOnCol(col);
+            activity.updatePlayerCardCount(col);
             tableAdapter.notifyDataSetChanged();
         }
     }
@@ -232,6 +241,10 @@ public class GameActivity extends AppCompatActivity
 
     public static void notifyChanged()
     {
-        tableAdapter.notifyDataSetChanged();
+        activity.tableAdapter.notifyDataSetChanged();
+        for(int i = 0; i < PlayerBuilder.getPlayersSize(); i++)
+        {
+            activity.updatePlayerCardCount(i);
+        }
     }
 }

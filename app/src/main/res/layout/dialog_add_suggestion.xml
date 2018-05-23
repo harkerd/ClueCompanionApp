@@ -49,6 +49,18 @@
         android:padding="5dp"
         android:id="@+id/responder"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Card Shown"/>
+
+    <Spinner
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:id="@+id/card_shown"/>
+
 
 
 </LinearLayout>
