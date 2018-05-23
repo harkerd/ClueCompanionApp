@@ -91,12 +91,12 @@ public class InitialSettingsActivity extends AppCompatActivity {
             }
         });
 
-        final CheckBox accessAccusationList = findViewById(R.id.accusation_list);
-        accessAccusationList.setChecked(Settings.accessAccusationList());
-        accessAccusationList.setOnClickListener(new View.OnClickListener() {
+        final CheckBox accessSuggestionList = findViewById(R.id.suggestion_list);
+        accessSuggestionList.setChecked(Settings.accessSuggestionList());
+        accessSuggestionList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Settings.setAccusationListAccess(accessAccusationList.isChecked());
+                Settings.setSuggestionListAccess(accessSuggestionList.isChecked());
             }
         });
 

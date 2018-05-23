@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ClueCompanionApp</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_accusation_list">AccusationList</string>
+    <string name="title_activity_suggestion_list">SuggestionList</string>
 </resources>

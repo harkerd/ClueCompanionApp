@@ -1,4 +1,4 @@
-package games.harker.cluecompanionapp.accusation;
+package games.harker.cluecompanionapp.suggestion;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,37 +11,37 @@ import games.harker.cluecompanionapp.R;
 import games.harker.cluecompanionapp.game.ClueGameSheet;
 import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
-public class AccusationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class SuggestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        LinearLayout row = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.accusation_row, parent, false);
-        return new AccusationRowHolder(row);
+        LinearLayout row = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.suggestion_row, parent, false);
+        return new SuggestionRowHolder(row);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        AccusationRowHolder row = (AccusationRowHolder) holder;
-        AccusationModel model = AccusationModel.get(position);
+        SuggestionRowHolder row = (SuggestionRowHolder) holder;
+        SuggestionModel model = SuggestionModel.get(position);
         row.bind(model);
     }
 
     @Override
     public int getItemCount()
     {
-        return AccusationModel.getListSize();
+        return SuggestionModel.getListSize();
     }
 
-    private class AccusationRowHolder extends RecyclerView.ViewHolder
+    private class SuggestionRowHolder extends RecyclerView.ViewHolder
     {
-        public AccusationRowHolder(View itemView)
+        public SuggestionRowHolder(View itemView)
         {
             super(itemView);
         }
 
-        public void bind(AccusationModel model)
+        public void bind(SuggestionModel model)
         {
             TextView accuser = itemView.findViewById(R.id.accuser);
             accuser.setBackgroundColor(PlayerBuilder.getPlayer(model.getAccuserPlayer()).getColor());

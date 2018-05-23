@@ -1,4 +1,4 @@
-package games.harker.cluecompanionapp.accusation;
+package games.harker.cluecompanionapp.suggestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import games.harker.cluecompanionapp.setup.PlayerBuilder;
 import games.harker.cluecompanionapp.setup.PlayerSetup;
 import games.harker.cluecompanionapp.setup.Settings;
 
-public class AccusationModel {
-    private static List<AccusationModel> list;
+public class SuggestionModel {
+    private static List<SuggestionModel> list;
 
-    public static void addToList(AccusationModel model)
+    public static void addToList(SuggestionModel model)
     {
         if(list == null)
         {
@@ -33,7 +33,7 @@ public class AccusationModel {
         }
     }
 
-    public static AccusationModel get(int index)
+    public static SuggestionModel get(int index)
     {
         if(list == null || list.size() <= index)
         {
@@ -57,7 +57,7 @@ public class AccusationModel {
     private int room;
     private int responderPlayerId;
 
-    protected AccusationModel(int accuserPlayerId, int suspect, int weapon, int room, int responderPlayerId)
+    protected SuggestionModel(int accuserPlayerId, int suspect, int weapon, int room, int responderPlayerId)
     {
         this.accuserPlayerId = accuserPlayerId;
         this.suspect = suspect;
@@ -93,7 +93,7 @@ public class AccusationModel {
 
     protected void updateResults()
     {
-        if(Settings.autoPopulate() && Settings.accessAccusationList())
+        if(Settings.autoPopulate() && Settings.accessSuggestionList())
         {
             updateResponderResult();
             updateNonResponders();

@@ -1,4 +1,4 @@
-package games.harker.cluecompanionapp.accusation;
+package games.harker.cluecompanionapp.suggestion;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import games.harker.cluecompanionapp.PlayerSelectAdapter;
 import games.harker.cluecompanionapp.R;
 
-public class AddAccusationDialog extends DialogFragment {
+public class AddSuggestionDialog extends DialogFragment {
     private Spinner accuser;
     private Spinner suspectItemsList;
     private Spinner weaponItemsList;
@@ -25,19 +25,19 @@ public class AddAccusationDialog extends DialogFragment {
 
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        LinearLayout view = (LinearLayout) inflater.inflate(R.layout.dialog_add_accusation, null);
+        LinearLayout view = (LinearLayout) inflater.inflate(R.layout.dialog_add_suggestion, null);
 
         accuser = view.findViewById(R.id.accuser);
         accuser.setAdapter(new PlayerSelectAdapter(getActivity(), false));
 
         suspectItemsList = view.findViewById(R.id.suspect);
-        suspectItemsList.setAdapter(new AccusationItemAdapter(getActivity(), 1));
+        suspectItemsList.setAdapter(new SuggestionItemAdapter(getActivity(), 1));
 
         weaponItemsList = view.findViewById(R.id.weapon);
-        weaponItemsList.setAdapter(new AccusationItemAdapter(getActivity(), 8));
+        weaponItemsList.setAdapter(new SuggestionItemAdapter(getActivity(), 8));
 
         roomItemsList = view.findViewById(R.id.room);
-        roomItemsList.setAdapter(new AccusationItemAdapter(getActivity(), 15));
+        roomItemsList.setAdapter(new SuggestionItemAdapter(getActivity(), 15));
 
         responder = view.findViewById(R.id.responder);
         responder.setAdapter(new PlayerSelectAdapter(getActivity(), true));
@@ -47,13 +47,13 @@ public class AddAccusationDialog extends DialogFragment {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        AccusationModel.addToList(new AccusationModel((int) accuser.getSelectedItem(), (int) suspectItemsList.getSelectedItem(), (int) weaponItemsList.getSelectedItem(), (int) roomItemsList.getSelectedItem(), (int) responder.getSelectedItem()));
-                        AccusationList.updateList();
+                        SuggestionModel.addToList(new SuggestionModel((int) accuser.getSelectedItem(), (int) suspectItemsList.getSelectedItem(), (int) weaponItemsList.getSelectedItem(), (int) roomItemsList.getSelectedItem(), (int) responder.getSelectedItem()));
+                        SuggestionList.updateList();
                     }
                 });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddAccusationDialog.this.getDialog().cancel();
+                        AddSuggestionDialog.this.getDialog().cancel();
                     }
                 });
 

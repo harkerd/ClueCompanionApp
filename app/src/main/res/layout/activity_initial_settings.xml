@@ -49,7 +49,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Access Accusation List"
-        android:id="@+id/accusation_list"/>
+        android:text="Access Suggestion List"
+        android:id="@+id/suggestion_list"/>
 
 </LinearLayout>

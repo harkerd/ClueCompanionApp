@@ -18,8 +18,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".accusation.AccusationList"
-            android:label="@string/title_activity_accusation_list"
+            android:name=".suggestion.SuggestionList"
+            android:label="@string/title_activity_suggestion_list"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import games.harker.cluecompanionapp.R;
 import games.harker.cluecompanionapp.Tools;
-import games.harker.cluecompanionapp.accusation.AccusationList;
+import games.harker.cluecompanionapp.suggestion.SuggestionList;
 import games.harker.cluecompanionapp.setup.PlayerBuilder;
 import games.harker.cluecompanionapp.setup.Settings;
 
@@ -32,7 +32,7 @@ public class GameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        if(Settings.accessAccusationList())
+        if(Settings.accessSuggestionList())
         {
             buttons = new View[5];
         }
@@ -138,21 +138,21 @@ public class GameActivity extends AppCompatActivity
         bottomBar.addView(knowHasNotButton);
         bottomBar.addView(seenButton);
 
-        if(Settings.accessAccusationList())
+        if(Settings.accessSuggestionList())
         {
-            Button accessAccusationList = new Button(this);
-            accessAccusationList.setBackgroundColor(Color.TRANSPARENT);
-            accessAccusationList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            accessAccusationList.setTextSize(24);
-            accessAccusationList.setText("+");
-            accessAccusationList.setOnClickListener(new View.OnClickListener() {
+            Button accessSuggestionList = new Button(this);
+            accessSuggestionList.setBackgroundColor(Color.TRANSPARENT);
+            accessSuggestionList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            accessSuggestionList.setTextSize(24);
+            accessSuggestionList.setText("+");
+            accessSuggestionList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(GameActivity.this, AccusationList.class);
+                    Intent intent = new Intent(GameActivity.this, SuggestionList.class);
                     startActivity(intent);
                 }
             });
-            bottomBar.addView(accessAccusationList);
+            bottomBar.addView(accessSuggestionList);
         }
 
         int currentlySelected = ClueGameSheet.getModel().getSelectedType();
@@ -198,9 +198,9 @@ public class GameActivity extends AppCompatActivity
             autoPopulateValues(row, col);
         }
 
-        if(Settings.accessAccusationList())
+        if(Settings.accessSuggestionList())
         {
-            AccusationList.updateList();
+            SuggestionList.updateList();
             tableAdapter.notifyDataSetChanged();
         }
     }

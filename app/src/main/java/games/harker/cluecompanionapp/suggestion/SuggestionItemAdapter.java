@@ -1,4 +1,4 @@
-package games.harker.cluecompanionapp.accusation;
+package games.harker.cluecompanionapp.suggestion;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,11 +10,11 @@ import android.widget.TextView;
 import games.harker.cluecompanionapp.game.ClueGameSheet;
 import games.harker.cluecompanionapp.setup.PlayerBuilder;
 
-public class AccusationItemAdapter extends BaseAdapter {
+public class SuggestionItemAdapter extends BaseAdapter {
     private Context context;
     private int startIndex;
 
-    public AccusationItemAdapter(Context context, int startIndex)
+    public SuggestionItemAdapter(Context context, int startIndex)
     {
         this.context = context;
         this.startIndex = startIndex;
